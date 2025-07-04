@@ -69,7 +69,9 @@ export function FaviconManager() {
         updateFaviconElements(cachedLogoUrl)
       } else {
         console.log('⚡ FAVICON: Using default favicon initially')
-        updateFaviconElements('/globe.svg')
+        // Use a data URL for default icon to prevent 404 errors
+        const defaultIcon = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%234f46e5"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial">M</text></svg>'
+        updateFaviconElements(defaultIcon)
       }
     }
 
@@ -136,12 +138,14 @@ export function FaviconManager() {
           localStorage.setItem('logo-url', logoUrl)
         } else {
           console.log('🎯 FAVICON: No logo found, using default favicon')
-          updateFaviconElements('/globe.svg')
+          const defaultIcon = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%234f46e5"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial">M</text></svg>'
+          updateFaviconElements(defaultIcon)
           localStorage.removeItem('logo-url')
         }
       } catch (error) {
         console.error('🚨 FAVICON: Critical error:', error)
-        updateFaviconElements('/globe.svg')
+        const defaultIcon = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%234f46e5"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial">M</text></svg>'
+        updateFaviconElements(defaultIcon)
         localStorage.removeItem('logo-url')
       }
     }
@@ -163,7 +167,8 @@ export function FaviconManager() {
         localStorage.setItem('logo-url', logoUrl)
       } else {
         console.log('🔄 FAVICON: Reverting to default favicon')
-        updateFaviconElements('/globe.svg')
+        const defaultIcon = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%234f46e5"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial">M</text></svg>'
+        updateFaviconElements(defaultIcon)
         localStorage.removeItem('logo-url')
       }
     }

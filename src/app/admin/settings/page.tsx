@@ -650,15 +650,6 @@ export default function SettingsPage() {
     try {
       // Test email functionality has been removed
       throw new Error('Email testing functionality is not available')
-
-      const data = await response.json()
-
-      if (response.ok) {
-        success('Test Email Sent', `Test email sent successfully to ${testEmail}. Check your inbox to verify the configuration.`)
-        setTestEmail('')
-      } else {
-        throw new Error(data.message || data.error || 'Failed to send test email')
-      }
     } catch (err) {
       console.error('Email test error:', err)
       error('Test Email Failed', err instanceof Error ? err.message : 'Failed to send test email')
@@ -709,15 +700,6 @@ export default function SettingsPage() {
     try {
       // Test SMS functionality has been removed
       throw new Error('SMS testing functionality is not available')
-
-      const data = await response.json()
-
-      if (response.ok) {
-        success('Test SMS Sent', `Test SMS sent successfully to ${testPhone}. Check your phone to verify the configuration.`)
-        setTestPhone('')
-      } else {
-        throw new Error(data.message || data.error || 'Failed to send test SMS')
-      }
     } catch (err) {
       console.error('SMS test error:', err)
       error('Test SMS Failed', err instanceof Error ? err.message : 'Failed to send test SMS')
@@ -1337,10 +1319,10 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={() => setRegistrationSettings(prev => ({ ...prev, formClosureDate: '' }))}
-                className="inline-flex items-center px-3 py-1 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 font-apercu-medium border border-red-200 rounded-md transition-colors duration-200 underline decoration-red-400 hover:decoration-red-600"
+                className="inline-flex items-center px-3 py-1 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 font-apercu-medium border border-red-200 rounded-md transition-colors duration-200 decoration-red-400 hover:decoration-red-600"
               >
                 <XCircle className="h-4 w-4 mr-1" />
-                Clear date (keep form open indefinitely)
+                Clear date & keep form open indefinitely
               </button>
             )}
 
@@ -1425,12 +1407,11 @@ export default function SettingsPage() {
                     className="w-full h-full object-contain"
                     onError={(e) => {
                       console.error('Logo failed to load:', currentLogo || branding.logoUrl)
-                      e.currentTarget.style.display = 'none'
-                      e.currentTarget.parentElement!.innerHTML = `
-                        <div class="w-full h-full bg-red-100 flex items-center justify-center">
-                          <span class="text-red-500 text-xs">Failed to load</span>
-                        </div>
-                      `
+                      // Replace with error message
+                      const errorDiv = document.createElement('div')
+                      errorDiv.className = 'w-full h-full bg-red-100 flex items-center justify-center'
+                      errorDiv.innerHTML = '<span class="text-red-500 text-xs">Failed to load</span>'
+                      e.currentTarget.parentElement!.replaceChild(errorDiv, e.currentTarget)
                     }}
                     onLoad={() => {
                       console.log('Logo loaded successfully:', currentLogo || branding.logoUrl)

@@ -3,7 +3,19 @@ services:
     name: youth-registration-system
     env: node
     plan: free
-    buildCommand: npm install && npx prisma generate && npx prisma db push && (npx tsx scripts/create-super-admin.ts || echo "Admin creation skipped") && (npx tsx scripts/seed-settings.ts || echo "Settings seeding skipped") && (npx tsx scripts/add-system-name-setting.ts || echo "System name setup skipped") && npm run build
+    buildCommand: |
+      echo "🚀 Starting build process..." &&
+      npm ci --only=production &&
+      echo "📦 Dependencies installed" &&
+      npx prisma generate &&
+      echo "🔧 Prisma client generated" &&
+      npx prisma db push &&
+      echo "🗄️ Database schema updated" &&
+      (npx tsx scripts/create-super-admin.ts && echo "👑 Admin account ready" || echo "⚠️ Admin creation skipped") &&
+      (npx tsx scripts/seed-settings.ts && echo "⚙️ Settings seeded" || echo "⚠️ Settings seeding skipped") &&
+      (npx tsx scripts/add-system-name-setting.ts && echo "🏷️ System name configured" || echo "⚠️ System name setup skipped") &&
+      npm run build &&
+      echo "✅ Build completed successfully"
     startCommand: npm start
     envVars:
       - key: NODE_ENV

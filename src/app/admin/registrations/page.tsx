@@ -1329,6 +1329,14 @@ export default function AdminRegistrations() {
                       <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Gender</label>
                       <p className="font-apercu-regular text-sm sm:text-base text-gray-900">{selectedRegistration.gender}</p>
                     </div>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Phone Number</label>
+                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900">{selectedRegistration.phoneNumber}</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Email Address</label>
+                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900 break-all">{selectedRegistration.emailAddress}</p>
+                    </div>
                     <div className="bg-gray-50 p-3 sm:p-4 rounded-lg lg:col-span-2">
                       <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Address</label>
                       <p className="font-apercu-regular text-sm sm:text-base text-gray-900 break-words">{selectedRegistration.address}</p>
@@ -1336,27 +1344,7 @@ export default function AdminRegistrations() {
                   </div>
                 </div>
 
-                {/* Contact Information */}
-                <div>
-                  <h4 className="font-apercu-bold text-base sm:text-lg text-gray-900 mb-3 sm:mb-4 flex items-center">
-                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-indigo-600" />
-                    Contact Information
-                  </h4>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Email Address</label>
-                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900 break-all">{selectedRegistration.emailAddress}</p>
-                    </div>
-                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Phone Number</label>
-                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900">{selectedRegistration.phoneNumber}</p>
-                    </div>
-                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg lg:col-span-2">
-                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Address</label>
-                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900 break-words">{selectedRegistration.address}</p>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Emergency Contact */}
                 <div>
@@ -1627,6 +1615,31 @@ export default function AdminRegistrations() {
                         <option value="Female">Female</option>
                       </select>
                     </div>
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <Input
+                        value={editFormData.phoneNumber}
+                        onChange={(e) => handleEditFormChange('phoneNumber', e.target.value)}
+                        className="font-apercu-regular"
+                        disabled={isEditing}
+                        placeholder="Enter phone number"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <Input
+                        type="email"
+                        value={editFormData.emailAddress}
+                        onChange={(e) => handleEditFormChange('emailAddress', e.target.value)}
+                        className="font-apercu-regular"
+                        disabled={isEditing}
+                        placeholder="Enter email address"
+                      />
+                    </div>
                     <div className="md:col-span-2">
                       <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
                         Address
@@ -1642,49 +1655,7 @@ export default function AdminRegistrations() {
                   </div>
                 </div>
 
-                {/* Contact Information Section */}
-                <div>
-                  <h4 className="font-apercu-bold text-lg text-gray-900 mb-4 flex items-center">
-                    <Mail className="h-5 w-5 mr-2 text-blue-600" />
-                    Contact Information
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      <Input
-                        type="email"
-                        value={editFormData.emailAddress}
-                        onChange={(e) => handleEditFormChange('emailAddress', e.target.value)}
-                        className="font-apercu-regular"
-                        disabled={isEditing}
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      <Input
-                        value={editFormData.phoneNumber}
-                        onChange={(e) => handleEditFormChange('phoneNumber', e.target.value)}
-                        className="font-apercu-regular"
-                        disabled={isEditing}
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
-                        Address
-                      </label>
-                      <Input
-                        value={editFormData.address}
-                        onChange={(e) => handleEditFormChange('address', e.target.value)}
-                        className="font-apercu-regular"
-                        disabled={isEditing}
-                      />
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Emergency Contact Section */}
                 <div>
