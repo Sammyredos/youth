@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "PRISMA_CLI_QUERY_ENGINE_TYPE": "binary",
+    "PRISMA_CLIENT_ENGINE_TYPE": "binary"
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  }
+}
