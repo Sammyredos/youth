@@ -22,7 +22,7 @@ git push origin main
 - **Branch**: `main`
 
 **Build & Deploy:**
-- **Build Command**: `npm install && npm install jose && npx prisma generate && npx prisma migrate deploy && npm run build`
+- **Build Command**: `npm install && npm install jose && npx prisma generate && npx prisma db push && npm run build`
 - **Start Command**: `npm start`
 
 ### 3. Environment Variables
@@ -75,6 +75,12 @@ npx tsx scripts/seed-settings.ts
 ```
 
 ## 📋 Troubleshooting
+
+### Migration Provider Mismatch Error (P3019)?
+If you see "datasource provider postgresql does not match sqlite":
+1. **Fix**: Update `prisma/migrations/migration_lock.toml`
+2. **Change**: `provider = "sqlite"` to `provider = "postgresql"`
+3. **Alternative**: Use `npx prisma db push` instead of `npx prisma migrate deploy`
 
 ### Migration Failed Error (P3018)?
 If you see "A migration failed to apply" or "no such table":
