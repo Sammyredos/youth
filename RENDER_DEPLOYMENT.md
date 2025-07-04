@@ -22,7 +22,7 @@ git push origin main
 - **Branch**: `main`
 
 **Build & Deploy:**
-- **Build Command**: `npm install && npm install jose && npx prisma generate && npx prisma db push && npm run build`
+- **Build Command**: `npm install && npm install jose && npx prisma generate && npx prisma db push --force-reset && npm run build`
 - **Start Command**: `npm start`
 
 ### 3. Environment Variables
@@ -75,6 +75,12 @@ npx tsx scripts/seed-settings.ts
 ```
 
 ## 📋 Troubleshooting
+
+### Failed Migration Error (P3009)?
+If you see "migrate found failed migrations in the target database":
+1. **Quick Fix**: Delete and recreate your PostgreSQL database in Render
+2. **Alternative**: Use `npx prisma db push --force-reset` in build command
+3. **Manual Fix**: Use Render Shell to run `npx prisma migrate reset --force`
 
 ### Migration Provider Mismatch Error (P3019)?
 If you see "datasource provider postgresql does not match sqlite":
