@@ -95,19 +95,21 @@ export async function POST(request: NextRequest) {
     // Generate email content
     const emailContent = generateEmailContent(registration, recipientName)
 
-    // In a real application, you would integrate with an email service like:
-    // - SendGrid
-    // - AWS SES
-    // - Nodemailer with SMTP
-    // - Resend
-    // - Mailgun
+    // Send actual email using the email service
+    try {
+      const { sendEmail } = await import('@/lib/email')
 
-    // For now, we'll simulate sending an email
-    console.log('Email would be sent to:', recipientEmail)
-    console.log('Email content:', emailContent)
+      await sendEmail({
+        to: [recipientEmail],
+        subject: `Registration Details - ${registration.fullName}`,
+        html: emailContent
+      })
 
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
+      console.log('Email sent successfully to:', recipientEmail)
+    } catch (emailError) {
+      console.error('Failed to send email:', emailError)
+      throw new Error(`Failed to send email: ${emailError.message}`)
+    }
 
     // Log the email activity (optional)
     if (userType === 'admin') {

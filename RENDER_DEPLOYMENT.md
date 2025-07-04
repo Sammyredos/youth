@@ -63,14 +63,17 @@ Add these in Render dashboard:
 
 ## 🛠️ Post-Deployment Setup
 
-### Create Admin Account (if needed)
-If login doesn't work, run this in Render shell:
+### ✅ Automatic Setup (Free Tier Compatible)
+The admin account and default settings are **automatically created** during deployment!
+
+- **Admin account** is created/updated during build
+- **Default settings** are seeded automatically
+- **No shell access required** - works on free tier
+
+### Manual Setup (if needed)
+If you have shell access and need to recreate the admin:
 ```bash
 npx tsx scripts/create-super-admin.ts
-```
-
-### Seed Default Settings
-```bash
 npx tsx scripts/seed-settings.ts
 ```
 

@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useReactiveSystemName } from '@/components/ui/reactive-system-name'
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -148,28 +149,33 @@ const checkDuplicateRegistration = async (data: Partial<FormData>) => {
   }
 }
 
-export default function RegisterPage() {
+// Initial form data
+const getInitialFormData = (): FormData => ({
+  fullName: '',
+  dateOfBirth: '',
+  gender: '',
+  address: '',
+  phoneNumber: '',
+  emailAddress: '',
+  emergencyContactName: '',
+  emergencyContactRelationship: '',
+  emergencyContactPhone: '',
+  parentGuardianName: '',
+  parentGuardianPhone: '',
+  parentGuardianEmail: '',
+  medications: '',
+  allergies: '',
+  specialNeeds: '',
+  dietaryRestrictions: '',
+  useParentAsEmergencyContact: false
+})
+
+// Form component that handles search params
+function RegistrationForm() {
   const systemName = useReactiveSystemName()
+  const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState<FormData>({
-    fullName: '',
-    dateOfBirth: '',
-    gender: '',
-    address: '',
-    phoneNumber: '',
-    emailAddress: '',
-    emergencyContactName: '',
-    emergencyContactRelationship: '',
-    emergencyContactPhone: '',
-    parentGuardianName: '',
-    parentGuardianPhone: '',
-    parentGuardianEmail: '',
-    medications: '',
-    allergies: '',
-    specialNeeds: '',
-    dietaryRestrictions: '',
-    useParentAsEmergencyContact: false
-  })
+  const [formData, setFormData] = useState<FormData>(getInitialFormData)
 
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [loading, setLoading] = useState(false)
@@ -185,6 +191,29 @@ export default function RegisterPage() {
   const [settingsLoading, setSettingsLoading] = useState(true)
 
   const totalSteps = 3
+
+  // Handle form reset when "Register Another Person" is clicked
+  useEffect(() => {
+    const shouldReset = searchParams.get('reset')
+    if (shouldReset === 'true') {
+      // Reset all form state
+      setFormData(getInitialFormData())
+      setCurrentStep(1)
+      setErrors([])
+      setLoading(false)
+      setSuccess(false)
+      setSubmitError('')
+      setStepTransitioning(false)
+
+      // Clear the reset parameter from URL without page reload
+      const url = new URL(window.location.href)
+      url.searchParams.delete('reset')
+      window.history.replaceState({}, '', url.toString())
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [searchParams])
 
   // Load registration settings
   useEffect(() => {
@@ -208,6 +237,18 @@ export default function RegisterPage() {
   const getFieldError = (fieldName: string) => {
     const error = errors.find(err => err.field === fieldName)
     return error?.message
+  }
+
+  // Manual reset function
+  const resetForm = () => {
+    setFormData(getInitialFormData())
+    setCurrentStep(1)
+    setErrors([])
+    setLoading(false)
+    setSuccess(false)
+    setSubmitError('')
+    setStepTransitioning(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const getStep1Progress = () => {
@@ -575,7 +616,7 @@ export default function RegisterPage() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <Link href="/register">
+                  <Link href="/register?reset=true">
                     Register Another Person
                   </Link>
                 </Button>
@@ -1532,5 +1573,14 @@ export default function RegisterPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+// Main page component with Suspense boundary
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<RegistrationFormSkeleton />}>
+      <RegistrationForm />
+    </Suspense>
   )
 }
