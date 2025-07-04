@@ -40,10 +40,12 @@ Add these in Render dashboard:
 
 ### 4. Create Database
 1. In Render dashboard: "New +" → "PostgreSQL"
-2. **Name**: `youth-registration-db`
-3. **Plan**: Free
-4. Copy the "External Database URL"
-5. Add it as `DATABASE_URL` environment variable
+2. **Name**: `youth-registration-database` (or any valid name)
+3. **Database Name**: `youth_registration` (this is the actual database name)
+4. **User**: `youth_user` (or leave default)
+5. **Plan**: Free
+6. Copy the "External Database URL"
+7. Add it as `DATABASE_URL` environment variable
 
 ### 5. Deploy
 - Click "Create Web Service"
@@ -74,15 +76,23 @@ npx tsx scripts/seed-settings.ts
 
 ## 📋 Troubleshooting
 
+### Database Name Issues?
+If Render rejects your database name:
+1. **Service Name**: Use letters, numbers, hyphens only (e.g., `youth-registration-database`)
+2. **Database Name**: Use underscores, not hyphens (e.g., `youth_registration`)
+3. **Avoid**: Special characters, spaces, or starting with numbers
+
 ### Build Fails?
 1. Check build logs in Render dashboard
 2. Ensure all dependencies are in package.json
 3. Verify environment variables are set
+4. Make sure `jose` package is installed
 
 ### Database Issues?
 1. Confirm DATABASE_URL is correct
 2. Check database is running
 3. Run migrations manually if needed
+4. Verify database name matches exactly
 
 ### Login Not Working?
 1. Create super admin account

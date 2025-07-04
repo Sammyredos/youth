@@ -10,7 +10,7 @@ services:
         value: production
       - key: DATABASE_URL
         fromDatabase:
-          name: youth-registration-db
+          name: youth-registration-database
           property: connectionString
       - key: NEXTAUTH_SECRET
         generateValue: true
@@ -24,7 +24,7 @@ services:
         generateValue: true
 
 databases:
-  - name: youth-registration-db
+  - name: youth-registration-database
     plan: free
     databaseName: youth_registration
     user: youth_user
