@@ -338,40 +338,6 @@ body {
   color: #ffffff !important;
 }
 
-/* Essential Login Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes slide-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-in-up {
-  animation: slide-in-up 0.6s ease-out;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out;
-}
-
 .bg-blue-600, .bg-blue-700, .bg-blue-500 {
   color: #ffffff !important;
 }

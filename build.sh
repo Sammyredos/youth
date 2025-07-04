@@ -15,7 +15,7 @@ npx prisma generate
 echo "🗄️ Running database migrations..."
 npx prisma migrate deploy
 
-# Note: Settings seeding will be done after deployment via separate script
+# Database seeding has been removed
 
 # Build the application
 echo "🏗️ Building application..."

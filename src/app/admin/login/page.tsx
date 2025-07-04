@@ -12,7 +12,7 @@ import { useProgress } from '@/hooks/useProgress'
 import { DynamicLogo } from '@/components/ui/dynamic-logo'
 import { useReactiveSystemName } from '@/components/ui/reactive-system-name'
 import { pagePreloader } from '@/lib/page-preloader'
-// import '@/styles/login-animations.css' // Temporarily disabled for build
+import '@/styles/login-animations.css'
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('')
