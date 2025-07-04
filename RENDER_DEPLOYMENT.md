@@ -76,9 +76,34 @@ npx tsx scripts/seed-settings.ts
 
 ## 📋 Troubleshooting
 
+### Migration Failed Error (P3018)?
+If you see "A migration failed to apply" or "no such table":
+
+**This means DATABASE_URL is not set correctly!**
+
+1. **Create PostgreSQL Database FIRST:**
+   - Go to Render Dashboard → "New +" → "PostgreSQL"
+   - Name: `youth-database`
+   - Database Name: `youth_registration`
+   - Wait for it to be "Available"
+
+2. **Copy Database URL:**
+   - Go to your database → "Info" tab
+   - Copy "External Database URL"
+   - Should start with `postgresql://`
+
+3. **Add to Web Service:**
+   - Go to Web Service → "Environment"
+   - Add: `DATABASE_URL` = (paste the PostgreSQL URL)
+   - **Save Changes**
+
+4. **Redeploy:**
+   - Go to "Deploys" tab
+   - Click "Deploy latest commit"
+
 ### Database Name Issues?
 If Render rejects your database name:
-1. **Service Name**: Use letters, numbers, hyphens only (e.g., `youth-registration-database`)
+1. **Service Name**: Use letters, numbers, hyphens only (e.g., `youth-database`)
 2. **Database Name**: Use underscores, not hyphens (e.g., `youth_registration`)
 3. **Avoid**: Special characters, spaces, or starting with numbers
 
