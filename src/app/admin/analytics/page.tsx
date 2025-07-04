@@ -40,6 +40,17 @@ export default function AnalyticsPage() {
     fetchAnalytics()
   }, [])
 
+  // Debug logging for age distribution
+  useEffect(() => {
+    if (analytics?.demographics?.ageGroups) {
+      console.log('🔍 Age Distribution Data:', analytics.demographics.ageGroups)
+      console.log('📊 Chart Data:', Object.entries(analytics.demographics.ageGroups).map(([label, value]) => ({
+        label: `${label} years`,
+        value: value as number
+      })))
+    }
+  }, [analytics])
+
   const fetchAnalytics = async (isRefresh = false) => {
     if (isRefresh) {
       setRefreshing(true)
@@ -162,20 +173,28 @@ export default function AnalyticsPage() {
         <Card className="p-4 sm:p-6 bg-white">
           <h3 className="font-apercu-bold text-base sm:text-lg text-gray-900 mb-3 sm:mb-4">Age Distribution</h3>
           <div className="h-64 sm:h-80">
-            {analytics?.demographics.ageGroups ? (
+            {analytics?.demographics?.ageGroups ? (
               <SimpleBarChart
                 data={Object.entries(analytics.demographics.ageGroups).map(([label, value]) => ({
-                  label,
+                  label: `${label} years`,
                   value: value as number
                 }))}
                 height={280}
                 colors={['#667EEA', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6']}
               />
-            ) : (
+            ) : analytics === null ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
                   <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-3" />
                   <p className="font-apercu-medium text-gray-500">Loading age data...</p>
+                </div>
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center">
+                <div className="text-center">
+                  <BarChart3 className="h-12 w-12 text-red-400 mx-auto mb-3" />
+                  <p className="font-apercu-medium text-red-500">Failed to load age data</p>
+                  <p className="font-apercu-regular text-xs text-gray-500 mt-1">Check console for errors</p>
                 </div>
               </div>
             )}

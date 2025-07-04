@@ -11,6 +11,7 @@ import { UserCard } from '@/components/ui/user-card'
 import { useToast } from '@/contexts/ToastContext'
 // Removed heavy animations for better performance
 import { QRScanner } from '@/components/admin/QRScanner'
+import { UnverificationWarningModal } from '@/components/modals/UnverificationWarningModal'
 
 import {
   Activity,
@@ -82,10 +83,17 @@ export default function AttendancePage() {
   const [registrations, setRegistrations] = useState<UnverifiedRegistration[]>([])
   const [initialLoading, setInitialLoading] = useState(true)
   const [verifying, setVerifying] = useState<string | null>(null)
+  const [unverifying, setUnverifying] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [verificationFilter, setVerificationFilter] = useState<'all' | 'verified' | 'unverified'>('all')
   const [showQRScanner, setShowQRScanner] = useState(false)
   const [scannerInputValue, setScannerInputValue] = useState('')
+
+  // Unverification modal state
+  const [showUnverifyModal, setShowUnverifyModal] = useState(false)
+  const [unverifyTarget, setUnverifyTarget] = useState<string | null>(null)
+  const [unverifyError, setUnverifyError] = useState<string | null>(null)
+  const [roomAllocationData, setRoomAllocationData] = useState<any>(null)
 
   // Dropdown states for collapsible sections - closed by default on mobile/tablet
   const [isGenderBreakdownOpen, setIsGenderBreakdownOpen] = useState(false)
@@ -223,6 +231,75 @@ export default function AttendancePage() {
     } finally {
       setVerifying(null)
     }
+  }
+
+  const handleUnverifyRequest = async (registrationId: string) => {
+    try {
+      setUnverifyError(null)
+      setRoomAllocationData(null)
+
+      // Check unverification eligibility
+      const response = await fetch(`/api/admin/attendance/unverify?registrationId=${registrationId}`)
+      const data = await response.json()
+
+      if (response.ok) {
+        setUnverifyTarget(registrationId)
+        setRoomAllocationData(data)
+        setShowUnverifyModal(true)
+      } else {
+        error(`Cannot check unverification status: ${data.error}`)
+      }
+    } catch (err) {
+      console.error('Error checking unverification eligibility:', err)
+      error('Failed to check unverification eligibility')
+    }
+  }
+
+  const handleUnverifyConfirm = async (forceUnverify = false) => {
+    if (!unverifyTarget) return
+
+    try {
+      setUnverifying(unverifyTarget)
+      setUnverifyError(null)
+
+      const response = await fetch('/api/admin/attendance/unverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          registrationId: unverifyTarget,
+          forceUnverify
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Refresh data
+        await Promise.all([loadStats(), loadRegistrations()])
+        success(data.message)
+        setShowUnverifyModal(false)
+        setUnverifyTarget(null)
+        setRoomAllocationData(null)
+      } else {
+        if (data.error === 'ROOM_ALLOCATED') {
+          setUnverifyError('User is allocated to a room. Please remove from room first.')
+          setRoomAllocationData(data)
+        } else {
+          setUnverifyError(data.error || 'Unverification failed')
+        }
+      }
+
+    } catch (err) {
+      console.error('Error unverifying registration:', err)
+      setUnverifyError('Failed to unverify registration')
+    } finally {
+      setUnverifying(null)
+    }
+  }
+
+  const handleGoToAccommodations = () => {
+    // Navigate to accommodations page
+    window.open('/admin/accommodations', '_blank')
   }
 
   const handleQRScan = async (qrData: string) => {
@@ -847,9 +924,12 @@ export default function AttendancePage() {
                               verifiedBy: registration.verifiedBy
                             }}
                             onVerify={handleManualVerification}
+                            onUnverify={handleUnverifyRequest}
                             onScanQR={() => setShowQRScanner(true)}
                             isVerifying={verifying === registration.id}
+                            isUnverifying={unverifying === registration.id}
                             showVerifyButton={!registration.isVerified}
+                            showUnverifyButton={registration.isVerified}
                             showQRButton={registration.hasQRCode}
                           />
                         </div>
@@ -970,6 +1050,24 @@ export default function AttendancePage() {
         isOpen={showQRScanner}
         onClose={() => setShowQRScanner(false)}
         onScan={handleQRScan}
+      />
+
+      {/* Unverification Warning Modal */}
+      <UnverificationWarningModal
+        isOpen={showUnverifyModal}
+        onClose={() => {
+          setShowUnverifyModal(false)
+          setUnverifyTarget(null)
+          setUnverifyError(null)
+          setRoomAllocationData(null)
+        }}
+        onConfirm={handleUnverifyConfirm}
+        onGoToAccommodations={handleGoToAccommodations}
+        loading={!!unverifying}
+        hasRoomAllocation={roomAllocationData?.hasRoomAllocation || false}
+        roomAllocation={roomAllocationData?.roomDetails}
+        registration={roomAllocationData?.registration}
+        error={unverifyError}
       />
 
     </AdminLayoutNew>

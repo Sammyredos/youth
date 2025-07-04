@@ -37,10 +37,13 @@ interface UserCardProps {
   }
   onView?: (user: any) => void
   onVerify?: (userId: string) => void
+  onUnverify?: (userId: string) => void
   onScanQR?: () => void
   onDelete?: (user: any) => void
   isVerifying?: boolean
+  isUnverifying?: boolean
   showVerifyButton?: boolean
+  showUnverifyButton?: boolean
   showQRButton?: boolean
   showDeleteButton?: boolean
   loading?: boolean
@@ -50,10 +53,13 @@ export function UserCard({
   user,
   onView,
   onVerify,
+  onUnverify,
   onScanQR,
   onDelete,
   isVerifying = false,
+  isUnverifying = false,
   showVerifyButton = false,
+  showUnverifyButton = false,
   showQRButton = false,
   showDeleteButton = false,
   loading = false
@@ -205,6 +211,19 @@ export function UserCard({
           >
             <UserCheck className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
             {isVerifying ? 'Verifying...' : 'Verify'}
+          </Button>
+        )}
+
+        {showUnverifyButton && onUnverify && user.isVerified && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="flex-1 font-apercu-medium text-xs lg:text-sm text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+            onClick={() => onUnverify(user.id)}
+            disabled={isUnverifying}
+          >
+            <UserX className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
+            {isUnverifying ? 'Unverifying...' : 'Unverify'}
           </Button>
         )}
         

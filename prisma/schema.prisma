@@ -118,6 +118,10 @@ model Registration {
   attendanceMarked  Boolean   @default(false)  // Whether attendance was marked
   attendanceTime    DateTime? // When attendance was marked
 
+  // Unverification tracking
+  unverifiedAt      DateTime? // When unverification occurred
+  unverifiedBy      String?   // Admin who unverified (email)
+
   // Room allocation (only for verified attendees)
   roomAllocation RoomAllocation?
 

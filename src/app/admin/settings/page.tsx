@@ -1485,22 +1485,6 @@ export default function SettingsPage() {
   // Communications Tab Content
   const renderCommunicationsTab = () => {
     try {
-      // Validate settings object exists
-      if (!settings || typeof settings !== 'object') {
-        return (
-          <div className="space-y-6">
-            <Card className="p-6 bg-white">
-              <div className="text-center py-8">
-                <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
-                <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Settings Not Loaded</h3>
-                <p className="font-apercu-bold text-sm text-gray-600">
-                  Settings data is not available. Please refresh the page.
-                </p>
-              </div>
-            </Card>
-          </div>
-        )
-      }
 
       return (
         <div className="space-y-6">
@@ -1572,11 +1556,22 @@ export default function SettingsPage() {
         </Card>
       ) : (
         <Card className="p-6 bg-white">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center mr-4">
+                <Mail className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-apercu-bold text-lg text-gray-900">Email Configuration</h3>
+                <p className="font-apercu-regular text-sm text-gray-600">Configure email messaging settings</p>
+              </div>
+            </div>
+          </div>
           <div className="text-center py-8">
             <Mail className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Email Not Configured</h3>
-            <p className="font-apercu-bold text-sm text-gray-600">
-              Email settings are not configured. Please contact your administrator.
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Email Tab Available</h3>
+            <p className="font-apercu-regular text-sm text-gray-600">
+              Email settings will be configured here. This tab is now accessible to Super Admin users.
             </p>
           </div>
         </Card>
@@ -1650,11 +1645,22 @@ export default function SettingsPage() {
         </Card>
       ) : (
         <Card className="p-6 bg-white">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                <Phone className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-apercu-bold text-lg text-gray-900">SMS Configuration</h3>
+                <p className="font-apercu-regular text-sm text-gray-600">Configure SMS messaging settings</p>
+              </div>
+            </div>
+          </div>
           <div className="text-center py-8">
             <Phone className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">SMS Not Configured</h3>
-            <p className="font-apercu-bold text-sm text-gray-600">
-              SMS settings are not configured. Please contact your administrator.
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">SMS Tab Available</h3>
+            <p className="font-apercu-regular text-sm text-gray-600">
+              SMS settings will be configured here. This tab is now accessible to Super Admin users.
             </p>
           </div>
         </Card>
@@ -1716,11 +1722,22 @@ export default function SettingsPage() {
         </Card>
       ) : (
         <Card className="p-6 bg-white">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                <Shield className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-apercu-bold text-lg text-gray-900">Security Settings</h3>
+                <p className="font-apercu-regular text-sm text-gray-600">Authentication and security preferences</p>
+              </div>
+            </div>
+          </div>
           <div className="text-center py-8">
             <Shield className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Security Settings Not Available</h3>
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Security Tab Available</h3>
             <p className="font-apercu-regular text-sm text-gray-600">
-              Security settings are not configured. Please contact your administrator.
+              Security settings will be configured here. This tab is now accessible to Super Admin users.
             </p>
           </div>
         </Card>
@@ -1808,11 +1825,22 @@ export default function SettingsPage() {
         </Card>
       ) : (
         <Card className="p-6 bg-white">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mr-4">
+                <Bell className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-apercu-bold text-lg text-gray-900">Notification Settings</h3>
+                <p className="font-apercu-regular text-sm text-gray-600">Configure notification preferences</p>
+              </div>
+            </div>
+          </div>
           <div className="text-center py-8">
             <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Notification Settings Not Available</h3>
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Notifications Tab Available</h3>
             <p className="font-apercu-regular text-sm text-gray-600">
-              Notification settings are not configured. Please contact your administrator.
+              Notification settings will be configured here. This tab is now accessible to Super Admin users.
             </p>
           </div>
         </Card>
@@ -2282,8 +2310,8 @@ export default function SettingsPage() {
           </div>
           <div className="sm:col-span-2 lg:col-span-1">
             <p className="font-apercu-medium text-sm text-gray-600 mb-1">Environment</p>
-            <Badge className="bg-green-100 text-green-800 border-green-200 font-apercu-medium">
-              Development
+            <Badge className="bg-blue-100 text-blue-800 border-blue-200 font-apercu-medium">
+              Production
             </Badge>
           </div>
         </div>
@@ -2455,11 +2483,16 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {settingsTabs
             .filter(tab => {
-              // Hide roles tab for users without Admin/Super Admin access
-              if (tab.id === 'roles') {
-                return ['Super Admin', 'Admin'].includes(currentUser?.role?.name || '')
+              // For Super Admin, show ALL tabs
+              if (currentUser?.role?.name === 'Super Admin') {
+                return true
               }
-              return true
+              // For Admin, show all except roles (if we want to restrict)
+              if (currentUser?.role?.name === 'Admin') {
+                return true // Show all tabs for Admin too
+              }
+              // For other roles, only show general tab
+              return tab.id === 'general'
             })
             .map((tab) => (
             <button
@@ -2482,11 +2515,16 @@ export default function SettingsPage() {
           <p className="font-apercu-regular text-sm text-indigo-700">
             {settingsTabs
               .filter(tab => {
-                // Apply same filter as navigation
-                if (tab.id === 'roles') {
-                  return ['Super Admin', 'Admin'].includes(currentUser?.role?.name || '')
+                // For Super Admin, show ALL tabs
+                if (currentUser?.role?.name === 'Super Admin') {
+                  return true
                 }
-                return true
+                // For Admin, show all tabs
+                if (currentUser?.role?.name === 'Admin') {
+                  return true
+                }
+                // For other roles, only show general tab
+                return tab.id === 'general'
               })
               .find(tab => tab.id === activeTab)?.description}
           </p>
