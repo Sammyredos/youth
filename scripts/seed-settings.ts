@@ -9,6 +9,22 @@ async function seedSettings() {
     // Default system settings
     const defaultSettings = [
       {
+        category: 'branding',
+        key: 'systemName',
+        name: 'System Name',
+        value: 'MOPGOM Global Youth Registration',
+        type: 'text',
+        description: 'System name displayed throughout the application'
+      },
+      {
+        category: 'branding',
+        key: 'systemDescription',
+        name: 'System Description',
+        value: 'Youth registration and management platform',
+        type: 'text',
+        description: 'Brief description of the system'
+      },
+      {
         key: 'system.name',
         value: 'MOPGOM Global Youth Registration',
         description: 'System name displayed in the application'
@@ -72,17 +88,43 @@ async function seedSettings() {
 
     // Upsert each setting
     for (const setting of defaultSettings) {
-      await prisma.setting.upsert({
-        where: { key: setting.key },
-        update: {
-          description: setting.description
-        },
-        create: {
-          key: setting.key,
-          value: setting.value,
-          description: setting.description
-        }
-      })
+      if (setting.category) {
+        // Handle categorized settings (new format)
+        await prisma.setting.upsert({
+          where: {
+            category_key: {
+              category: setting.category,
+              key: setting.key
+            }
+          },
+          update: {
+            name: setting.name,
+            description: setting.description,
+            type: setting.type
+          },
+          create: {
+            category: setting.category,
+            key: setting.key,
+            name: setting.name,
+            value: JSON.stringify(setting.value),
+            type: setting.type,
+            description: setting.description
+          }
+        })
+      } else {
+        // Handle legacy settings (old format)
+        await prisma.setting.upsert({
+          where: { key: setting.key },
+          update: {
+            description: setting.description
+          },
+          create: {
+            key: setting.key,
+            value: setting.value,
+            description: setting.description
+          }
+        })
+      }
     }
 
     console.log(`✅ Seeded ${defaultSettings.length} default settings`)

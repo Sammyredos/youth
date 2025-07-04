@@ -39,6 +39,7 @@ import {
 
 interface Registration {
   id: string
+  // Fields collected from /register page
   fullName: string
   dateOfBirth: string
   gender: string
@@ -51,22 +52,20 @@ interface Registration {
   parentGuardianName?: string
   parentGuardianPhone?: string
   parentGuardianEmail?: string
-  roommateRequestConfirmationNumber?: string
   medications?: string
   allergies?: string
   specialNeeds?: string
   dietaryRestrictions?: string
-  parentalPermissionGranted: boolean
-  parentalPermissionDate?: string
-  // Verification fields
+  // System fields
+  createdAt: string
+  updatedAt: string
+  // Admin-only verification fields (not shown in modal)
   isVerified?: boolean
   verifiedAt?: string
   verifiedBy?: string
   qrCode?: string
   attendanceMarked?: boolean
   attendanceTime?: string
-  createdAt: string
-  updatedAt: string
 }
 
 interface PaginationInfo {
@@ -1330,9 +1329,9 @@ export default function AdminRegistrations() {
                       <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Gender</label>
                       <p className="font-apercu-regular text-sm sm:text-base text-gray-900">{selectedRegistration.gender}</p>
                     </div>
-                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Registration Date</label>
-                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900">{formatDate(selectedRegistration.createdAt)}</p>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg lg:col-span-2">
+                      <label className="block font-apercu-medium text-xs sm:text-sm text-gray-600 mb-1">Address</label>
+                      <p className="font-apercu-regular text-sm sm:text-base text-gray-900 break-words">{selectedRegistration.address}</p>
                     </div>
                   </div>
                 </div>
@@ -1628,6 +1627,18 @@ export default function AdminRegistrations() {
                         <option value="Female">Female</option>
                       </select>
                     </div>
+                    <div className="md:col-span-2">
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Address
+                      </label>
+                      <Input
+                        value={editFormData.address}
+                        onChange={(e) => handleEditFormChange('address', e.target.value)}
+                        className="font-apercu-regular"
+                        disabled={isEditing}
+                        placeholder="Enter full address"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1718,6 +1729,67 @@ export default function AdminRegistrations() {
                   </div>
                 </div>
 
+                {/* Medical Information Section */}
+                <div>
+                  <h4 className="font-apercu-bold text-lg text-gray-900 mb-4 flex items-center">
+                    <Heart className="h-5 w-5 mr-2 text-green-600" />
+                    Medical & Dietary Information
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Medications
+                      </label>
+                      <textarea
+                        value={editFormData.medications || ''}
+                        onChange={(e) => handleEditFormChange('medications', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg font-apercu-regular focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                        disabled={isEditing}
+                        rows={3}
+                        placeholder="List any medications..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Allergies
+                      </label>
+                      <textarea
+                        value={editFormData.allergies || ''}
+                        onChange={(e) => handleEditFormChange('allergies', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg font-apercu-regular focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                        disabled={isEditing}
+                        rows={3}
+                        placeholder="List any allergies..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Special Needs
+                      </label>
+                      <textarea
+                        value={editFormData.specialNeeds || ''}
+                        onChange={(e) => handleEditFormChange('specialNeeds', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg font-apercu-regular focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                        disabled={isEditing}
+                        rows={3}
+                        placeholder="Describe any special needs..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-apercu-medium text-sm text-gray-700 mb-2">
+                        Dietary Restrictions
+                      </label>
+                      <textarea
+                        value={editFormData.dietaryRestrictions || ''}
+                        onChange={(e) => handleEditFormChange('dietaryRestrictions', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg font-apercu-regular focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                        disabled={isEditing}
+                        rows={3}
+                        placeholder="List any dietary restrictions..."
+                      />
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </div>

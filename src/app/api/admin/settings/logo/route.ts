@@ -158,7 +158,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
+    console.log('GET /api/admin/settings/logo - Fetching logo URL...')
     const logoUrl = await getSetting('branding', 'logoUrl', null)
+    console.log('Retrieved logo URL from database:', logoUrl)
 
     return NextResponse.json({
       success: true,

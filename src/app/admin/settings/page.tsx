@@ -203,15 +203,24 @@ export default function SettingsPage() {
 
   const loadCurrentLogo = async () => {
     try {
+      console.log('Loading current logo...')
       const response = await fetch('/api/admin/settings/logo')
+      console.log('Logo API response status:', response.status)
+
       if (response.ok) {
         const data = await response.json()
+        console.log('Logo API response data:', data)
+
         if (data.logoUrl) {
+          console.log('Setting current logo to:', data.logoUrl)
           setCurrentLogo(data.logoUrl)
+        } else {
+          console.log('No logo URL in response')
         }
+      } else {
+        console.error('Logo API response not ok:', response.status, response.statusText)
       }
     } catch (error) {
-      // Silently handle logo fetch error - not critical
       console.error('Failed to load current logo:', error)
     }
   }
@@ -1409,11 +1418,23 @@ export default function SettingsPage() {
             {/* Current Logo Preview */}
             <div className="flex items-center space-x-4">
               {(currentLogo || branding.logoUrl) ? (
-                <div className="h-16 w-16 rounded-lg overflow-hidden border border-gray-200">
+                <div className="h-16 w-16 rounded-lg overflow-hidden border border-gray-200 bg-white">
                   <img
                     src={currentLogo || branding.logoUrl || ''}
                     alt="Current Logo"
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      console.error('Logo failed to load:', currentLogo || branding.logoUrl)
+                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.parentElement!.innerHTML = `
+                        <div class="w-full h-full bg-red-100 flex items-center justify-center">
+                          <span class="text-red-500 text-xs">Failed to load</span>
+                        </div>
+                      `
+                    }}
+                    onLoad={() => {
+                      console.log('Logo loaded successfully:', currentLogo || branding.logoUrl)
+                    }}
                   />
                 </div>
               ) : (
@@ -1426,6 +1447,11 @@ export default function SettingsPage() {
                 <p className="font-apercu-regular text-xs text-gray-500">
                   {(currentLogo || branding.logoUrl) ? 'Custom logo uploaded' : 'Default system icon'}
                 </p>
+                {(currentLogo || branding.logoUrl) && (
+                  <p className="font-apercu-regular text-xs text-gray-400 mt-1">
+                    Path: {currentLogo || branding.logoUrl}
+                  </p>
+                )}
               </div>
             </div>
 
