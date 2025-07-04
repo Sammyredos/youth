@@ -3,7 +3,8 @@ services:
     name: youth-registration-system
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    runtime: node20
+    buildCommand: npm run render-build
     startCommand: npm start
     envVars:
       - key: NODE_ENV

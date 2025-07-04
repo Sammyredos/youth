@@ -78,7 +78,9 @@ jspm_packages/
 
 # Gatsby files
 .cache/
-public
+# public - Allow fonts and static assets, but exclude uploads
+public/uploads/*
+!public/uploads/.gitkeep
 
 # Storybook build outputs
 .out
@@ -117,9 +119,9 @@ Thumbs.db
 prisma/dev.db*
 prisma/migrations/.migrate
 
-# Uploads
-public/uploads/*
-!public/uploads/.gitkeep
+# Uploads (already handled above)
+# public/uploads/*
+# !public/uploads/.gitkeep
 
 # Cache directories
 .cache/

@@ -15,7 +15,9 @@ npx prisma generate
 echo "🗄️ Running database migrations..."
 npx prisma migrate deploy
 
-# Database seeding has been removed
+# Seed default settings if needed
+echo "🌱 Seeding default settings..."
+npx tsx scripts/seed-settings.ts || echo "⚠️ Settings seeding failed or already exists"
 
 # Build the application
 echo "🏗️ Building application..."

@@ -8,7 +8,7 @@
     "dev:simple": "next dev -H 0.0.0.0 -p 3000",
     "build": "prisma generate && next build",
     "build:production": "SKIP_TYPE_CHECK=true prisma generate && next build",
-    "render-build": "npm install && prisma generate && prisma migrate deploy && npm run build",
+    "render-build": "npm install && npx prisma generate && npx prisma migrate deploy && npx tsx scripts/seed-settings.ts && npm run build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
@@ -69,8 +69,8 @@
     "typescript": "^5.6.3"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
   },
   "keywords": [
     "youth",

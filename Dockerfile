@@ -1,13 +1,16 @@
-# Use Node.js 18 Alpine for smaller image size
-FROM node:18-alpine AS base
+# Use Node.js 20 Alpine for better compatibility
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+# Copy package files and Prisma schema (needed for postinstall)
 COPY package.json package-lock.json* ./
+COPY prisma ./prisma
+
+# Install dependencies based on the preferred package manager
 RUN npm ci --only=production
 
 # Rebuild the source code only when needed
@@ -16,7 +19,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma client
+# Generate Prisma client (schema already copied in deps stage)
 RUN npx prisma generate
 
 # Build the application
