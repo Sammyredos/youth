@@ -5,31 +5,6 @@ import { LogoManager } from '@/lib/logo-manager'
 
 export function FaviconManager() {
   useEffect(() => {
-    // Subscribe to logo updates from LogoManager
-    const unsubscribe = LogoManager.subscribe((logoUrl) => {
-      if (logoUrl) {
-        console.log('🔧 FAVICON: Logo updated via LogoManager:', logoUrl)
-        updateFaviconElements(logoUrl)
-      } else {
-        console.log('🔧 FAVICON: No logo, using default')
-        updateFaviconElements('/globe.svg')
-      }
-    })
-
-    // Get initial logo
-    const currentLogo = LogoManager.getCurrentLogo()
-    if (currentLogo) {
-      updateFaviconElements(currentLogo)
-    } else {
-      // Load from API if not available
-      LogoManager.loadLogoFromAPI().then((logoUrl) => {
-        if (logoUrl) {
-          updateFaviconElements(logoUrl)
-        } else {
-          updateFaviconElements('/globe.svg')
-        }
-      })
-    }
     // Define updateFaviconElements function first
     const updateFaviconElements = (faviconUrl: string) => {
       console.log('🔧 FAVICON: Updating favicon elements to:', faviconUrl)

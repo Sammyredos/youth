@@ -174,12 +174,6 @@ function getLikelyNextPages(currentPath: string): string[] {
       '/admin/notifications',
       '/admin/users',
       '/admin/dashboard'
-    ],
-    '/admin/events': [
-      '/admin/registrations',
-      '/admin/accommodations',
-      '/admin/users',
-      '/admin/dashboard'
     ]
   }
 

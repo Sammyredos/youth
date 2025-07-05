@@ -70,11 +70,6 @@ const ADMIN_ROUTES: PageRoute[] = [
     path: '/admin/inbox',
     component: 'inbox',
     config: { priority: 'low', prefetch: true, preload: false, cache: true }
-  },
-  {
-    path: '/admin/events',
-    component: 'events',
-    config: { priority: 'low', prefetch: true, preload: false, cache: true }
   }
 ]
 

@@ -57,12 +57,6 @@ async function createSuperAdmin() {
       { name: 'roles.delete', description: 'Delete roles', resource: 'roles', action: 'delete' },
       { name: 'roles.manage', description: 'Full role management', resource: 'roles', action: 'manage' },
 
-      // Events
-      { name: 'events.read', description: 'View events', resource: 'events', action: 'read' },
-      { name: 'events.write', description: 'Create and edit events', resource: 'events', action: 'write' },
-      { name: 'events.delete', description: 'Delete events', resource: 'events', action: 'delete' },
-      { name: 'events.manage', description: 'Full event management', resource: 'events', action: 'manage' },
-
       // Notifications
       { name: 'notifications.read', description: 'View notifications', resource: 'notifications', action: 'read' },
       { name: 'notifications.write', description: 'Send notifications', resource: 'notifications', action: 'write' },
@@ -140,7 +134,7 @@ async function createSuperAdmin() {
     // Manager role (read/write but limited delete/manage)
     const managerPermissions = createdPermissions.filter(p =>
       p.action === 'read' || p.action === 'write' ||
-      (p.action === 'manage' && ['communications', 'events', 'notifications'].includes(p.resource))
+      (p.action === 'manage' && ['communications', 'notifications'].includes(p.resource))
     )
 
     await prisma.role.upsert({

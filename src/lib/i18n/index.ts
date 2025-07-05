@@ -128,7 +128,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Inbox',
     'nav.analytics': 'Analytics',
     'nav.reports': 'Reports',
-    'nav.events': 'Events',
     'nav.notifications': 'Notifications',
     'nav.userManagement': 'User Management',
 
@@ -314,7 +313,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Boîte de réception',
     'nav.analytics': 'Analyses',
     'nav.reports': 'Rapports',
-    'nav.events': 'Événements',
     'nav.notifications': 'Notifications',
     'nav.userManagement': 'Gestion des utilisateurs',
 
@@ -402,7 +400,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Bandeja de entrada',
     'nav.analytics': 'Análisis',
     'nav.reports': 'Informes',
-    'nav.events': 'Eventos',
     'nav.notifications': 'Notificaciones',
     'nav.userManagement': 'Gestión de usuarios',
 
@@ -497,7 +494,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Akwatin saƙo',
     'nav.analytics': 'Bincike',
     'nav.reports': 'Rahotanni',
-    'nav.events': 'Abubuwan da suka faru',
     'nav.notifications': 'Sanarwa',
     'nav.userManagement': 'Sarrafa masu amfani',
 
@@ -557,7 +553,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Igbe ozi',
     'nav.analytics': 'Nyocha',
     'nav.reports': 'Akụkọ',
-    'nav.events': 'Ihe omume',
     'nav.notifications': 'Ọkwa',
     'nav.userManagement': 'Njikwa ndị ọrụ',
 
@@ -617,7 +612,6 @@ const coreTranslations: Record<Language, Record<string, string>> = {
     'nav.inbox': 'Apoti iwe',
     'nav.analytics': 'Itupalẹ',
     'nav.reports': 'Awọn ijabọ',
-    'nav.events': 'Awọn iṣẹlẹ',
     'nav.notifications': 'Awọn iwifun',
     'nav.userManagement': 'Iṣakoso awọn olumulo',
 

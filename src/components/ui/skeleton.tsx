@@ -376,59 +376,8 @@ function DashboardContentSkeleton() {
   )
 }
 
-// Events Page Skeleton
-function EventsSkeleton() {
-  return (
-    <div className="space-y-6">
-      {/* Header Skeleton */}
-      <div className="flex justify-between items-center">
-        <div className="space-y-2">
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-4 w-64" />
-        </div>
-        <Skeleton className="h-10 w-32 rounded-md" />
-      </div>
 
-      {/* Events Grid Skeleton */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-lg border bg-card p-6 shadow-sm">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-5 w-32" />
-                <Skeleton className="h-6 w-16 rounded-full" />
-              </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <Skeleton className="h-4 w-4" />
-                  <Skeleton className="h-3 w-20" />
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Skeleton className="h-4 w-4" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <Skeleton className="h-8 flex-1 rounded-md" />
-                <Skeleton className="h-8 flex-1 rounded-md" />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Calendar Skeleton */}
-      <div className="rounded-lg border bg-card p-6 shadow-sm">
-        <Skeleton className="h-6 w-32 mb-4" />
-        <Skeleton className="h-64 w-full rounded-lg" />
-      </div>
-    </div>
-  )
-}
 
 // Inbox Content Skeleton
 function InboxContentSkeleton() {
@@ -608,7 +557,6 @@ export {
   NotificationSkeleton,
   UserDirectorySkeleton,
   DashboardContentSkeleton,
-  EventsSkeleton,
   InboxContentSkeleton,
   RegistrationFormSkeleton,
   RegistrationSettingsSkeleton

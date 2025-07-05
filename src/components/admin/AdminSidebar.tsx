@@ -104,13 +104,6 @@ const getNavigation = (t: (key: string) => string): NavigationItem[] => [
     requiredRoles: [], // Available to all roles including Staff (view only)
   },
   {
-    name: t('nav.events'),
-    href: '/admin/events',
-    icon: Calendar,
-    badge: null,
-    requiredRoles: [], // Available to all roles
-  },
-  {
     name: t('nav.notifications'),
     href: '/admin/notifications',
     icon: Bell,

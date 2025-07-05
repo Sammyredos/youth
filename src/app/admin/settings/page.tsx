@@ -12,6 +12,7 @@ import { ErrorModal } from '@/components/ui/error-modal'
 // import { getErrorMessage, parseApiError } from '@/lib/error-messages' // Commented out as unused (using local parseApiError)
 import { useBranding } from '@/contexts/BrandingContext'
 import { SystemBranding } from '@/components/admin/SystemBranding'
+import { EmailConfigDisplay } from '@/components/admin/EmailConfigDisplay'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { LogoManager } from '@/lib/logo-manager'
 import { RolesPermissionsManager } from '@/components/admin/RolesPermissionsManager'
@@ -1606,13 +1607,8 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-          <div className="text-center py-8">
-            <Mail className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Email Tab Available</h3>
-            <p className="font-apercu-regular text-sm text-gray-600">
-              Email settings will be configured here. This tab is now accessible to Super Admin users.
-            </p>
-          </div>
+          {/* Email Configuration Display */}
+          <EmailConfigDisplay />
         </Card>
       )}
 
@@ -1696,11 +1692,18 @@ export default function SettingsPage() {
             </div>
           </div>
           <div className="text-center py-8">
-            <Phone className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">SMS Tab Available</h3>
-            <p className="font-apercu-regular text-sm text-gray-600">
-              SMS settings will be configured here. This tab is now accessible to Super Admin users.
+            <Phone className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">✅ SMS Tab Working!</h3>
+            <p className="font-apercu-regular text-sm text-gray-600 mb-4">
+              SMS settings tab is now accessible to Super Admin users. The tab is displaying correctly.
             </p>
+            {currentUser?.role?.name === 'Admin' && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4">
+                <p className="text-amber-700 text-sm">
+                  You have read-only access to this tab as an Admin user.
+                </p>
+              </div>
+            )}
           </div>
         </Card>
       )}
@@ -1791,11 +1794,18 @@ export default function SettingsPage() {
             </div>
           </div>
           <div className="text-center py-8">
-            <Shield className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Security Tab Available</h3>
-            <p className="font-apercu-regular text-sm text-gray-600">
-              Security settings will be configured here. This tab is now accessible to Super Admin users.
+            <Shield className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">✅ Security Tab Working!</h3>
+            <p className="font-apercu-regular text-sm text-gray-600 mb-4">
+              Security settings tab is now accessible to Super Admin users. The tab is displaying correctly.
             </p>
+            {currentUser?.role?.name === 'Admin' && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4">
+                <p className="text-amber-700 text-sm">
+                  You have read-only access to this tab as an Admin user.
+                </p>
+              </div>
+            )}
           </div>
         </Card>
       )}
@@ -1912,11 +1922,18 @@ export default function SettingsPage() {
             </div>
           </div>
           <div className="text-center py-8">
-            <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">Notifications Tab Available</h3>
-            <p className="font-apercu-regular text-sm text-gray-600">
-              Notification settings will be configured here. This tab is now accessible to Super Admin users.
+            <Bell className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h3 className="font-apercu-bold text-lg text-gray-900 mb-2">✅ Notifications Tab Working!</h3>
+            <p className="font-apercu-regular text-sm text-gray-600 mb-4">
+              Notifications settings tab is now accessible to Super Admin users. The tab is displaying correctly.
             </p>
+            {currentUser?.role?.name === 'Admin' && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4">
+                <p className="text-amber-700 text-sm">
+                  You have read-only access to this tab as an Admin user.
+                </p>
+              </div>
+            )}
           </div>
         </Card>
       )}

@@ -83,7 +83,7 @@ export default function NotFound() {
               <Button asChild variant="outline" className="w-full border-gray-300 hover:border-indigo-300 hover:bg-indigo-50 font-apercu-medium transition-all duration-200">
                 <Link href="/register">
                   <Users className="w-4 h-4 mr-2" />
-                  Register for Event
+                  Register Now
                 </Link>
               </Button>
             </div>
