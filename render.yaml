@@ -4,19 +4,27 @@ services:
     env: node
     plan: free
     buildCommand: |
-      echo "🚀 Starting build process..." &&
+      echo "🚀 Starting Mopgomyouth build process..." &&
+      echo "📦 Installing dependencies..." &&
       npm ci --only=production &&
-      echo "📦 Dependencies installed" &&
+      echo "✅ Dependencies installed successfully" &&
+      echo "🔧 Generating Prisma client..." &&
       npx prisma generate &&
-      echo "🔧 Prisma client generated" &&
+      echo "✅ Prisma client generated" &&
+      echo "🗄️ Updating database schema..." &&
       npx prisma db push &&
-      echo "🗄️ Database schema updated" &&
-      (npx tsx scripts/create-super-admin.ts && echo "👑 Admin account ready" || echo "⚠️ Admin creation skipped") &&
-      (npx tsx scripts/seed-settings.ts && echo "⚙️ Settings seeded" || echo "⚠️ Settings seeding skipped") &&
-      (npx tsx scripts/add-system-name-setting.ts && echo "🏷️ System name configured" || echo "⚠️ System name setup skipped") &&
+      echo "✅ Database schema updated" &&
+      echo "👑 Setting up admin account..." &&
+      (npx tsx scripts/create-super-admin.ts && echo "✅ Super Admin account ready" || echo "⚠️ Admin creation skipped (may already exist)") &&
+      echo "⚙️ Seeding system settings..." &&
+      (npx tsx scripts/seed-settings.ts && echo "✅ Settings seeded successfully" || echo "⚠️ Settings seeding skipped (may already exist)") &&
+      echo "🏷️ Configuring system name..." &&
+      (npx tsx scripts/add-system-name-setting.ts && echo "✅ System name configured" || echo "⚠️ System name setup skipped (may already exist)") &&
+      echo "🏗️ Building Next.js application..." &&
       npm run build &&
-      echo "✅ Build completed successfully"
+      echo "🎉 Mopgomyouth build completed successfully!"
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
@@ -34,6 +42,10 @@ services:
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
+      - key: REDIS_URL
+        value: ""
+      - key: RATE_LIMIT_ENABLED
+        value: "true"
 
 databases:
   - name: youth-registration-database
