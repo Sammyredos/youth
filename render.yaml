@@ -8,21 +8,23 @@ services:
       echo "📦 Installing dependencies..." &&
       npm ci --only=production &&
       echo "✅ Dependencies installed successfully" &&
-      echo "🔧 Generating Prisma client..." &&
+      echo "🔧 Generating Prisma client for PostgreSQL..." &&
       npx prisma generate &&
       echo "✅ Prisma client generated" &&
       echo "🗄️ Updating database schema..." &&
       npx prisma db push &&
       echo "✅ Database schema updated" &&
-      echo "👑 Setting up admin account..." &&
-      (npx tsx scripts/create-super-admin.ts && echo "✅ Super Admin account ready" || echo "⚠️ Admin creation skipped (may already exist)") &&
+      echo "👑 Setting up Super Admin account..." &&
+      (npx tsx scripts/create-super-admin.ts && echo "✅ Super Admin account ready (admin@mopgomglobal.com)" || echo "⚠️ Admin creation skipped (may already exist)") &&
       echo "⚙️ Seeding system settings..." &&
       (npx tsx scripts/seed-settings.ts && echo "✅ Settings seeded successfully" || echo "⚠️ Settings seeding skipped (may already exist)") &&
       echo "🏷️ Configuring system name..." &&
       (npx tsx scripts/add-system-name-setting.ts && echo "✅ System name configured" || echo "⚠️ System name setup skipped (may already exist)") &&
       echo "🏗️ Building Next.js application..." &&
       npm run build &&
-      echo "🎉 Mopgomyouth build completed successfully!"
+      echo "🎉 Mopgomyouth build completed successfully!" &&
+      echo "🔗 Your app will be available at: https://mopgomyouth.onrender.com" &&
+      echo "👤 Super Admin Login: admin@mopgomglobal.com / SuperAdmin123!"
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
@@ -46,6 +48,16 @@ services:
         value: ""
       - key: RATE_LIMIT_ENABLED
         value: "true"
+      - key: LOG_LEVEL
+        value: "info"
+      - key: HEALTH_CHECK_ENABLED
+        value: "true"
+      - key: GDPR_ENABLED
+        value: "true"
+      - key: DATA_RETENTION_DAYS
+        value: "2555"
+      - key: CONSENT_VERSION
+        value: "1.0"
 
 databases:
   - name: youth-registration-database

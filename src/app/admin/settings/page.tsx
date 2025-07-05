@@ -87,21 +87,37 @@ export default function SettingsPage() {
 
   // Helper function to determine write access
   const hasWriteAccess = (tabId: string) => {
-    if (!currentUser?.role?.name) return false
+    console.log('🔍 WRITE ACCESS CHECK:', {
+      tabId,
+      currentUser: currentUser ? {
+        email: currentUser.email,
+        roleName: currentUser.role?.name,
+        hasRole: !!currentUser.role
+      } : null
+    })
+
+    if (!currentUser?.role?.name) {
+      console.log('❌ No user role - denying write access')
+      return false
+    }
 
     // Super Admin has write access to everything
     if (currentUser.role.name === 'Super Admin') {
+      console.log('✅ Super Admin - granting write access to', tabId)
       return true
     }
 
     // Admin has read-only access to security and notifications
     if (currentUser.role.name === 'Admin') {
       if (tabId === 'security' || tabId === 'notifications') {
+        console.log('⚠️ Admin - read-only access to', tabId)
         return false // Read-only for Admin
       }
+      console.log('✅ Admin - granting write access to', tabId)
       return true // Write access to other tabs
     }
 
+    console.log('❌ Other role - denying write access')
     return false
   }
 
@@ -201,6 +217,15 @@ export default function SettingsPage() {
 
   // Handle role-based tab access after user is loaded
   useEffect(() => {
+    console.log('🔍 SETTINGS DEBUG: User effect triggered', {
+      hasCurrentUser: !!currentUser,
+      userRole: currentUser?.role?.name,
+      userEmail: currentUser?.email,
+      isInitialized,
+      activeTab,
+      userLoading
+    })
+
     if (currentUser && isInitialized) {
       // Check if user has access to roles tab
       if (activeTab === 'roles' && !['Super Admin', 'Admin'].includes(currentUser?.role?.name || '')) {
@@ -2587,10 +2612,18 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {settingsTabs
             .filter(tab => {
-              // FORCE ALL TABS TO SHOW FOR SUPER ADMIN AND ADMIN - NO EXCEPTIONS!
-              console.log('🔍 FORCED Settings Tab Filter:', {
+              // ENHANCED DEBUG: Show detailed user and tab information
+              console.log('🔍 ENHANCED Settings Tab Filter:', {
                 tabId: tab.id,
-                currentUserRole: currentUser?.role?.name,
+                tabName: tab.name,
+                currentUser: currentUser ? {
+                  email: currentUser.email,
+                  name: currentUser.name,
+                  role: currentUser.role?.name,
+                  roleId: currentUser.role?.id,
+                  hasRole: !!currentUser.role,
+                  isActive: currentUser.isActive
+                } : null,
                 userLoading,
                 hasCurrentUser: !!currentUser,
                 forcingAllTabs: true
@@ -2604,13 +2637,13 @@ export default function SettingsPage() {
 
               // FORCE ALL TABS FOR SUPER ADMIN - PERIOD!
               if (currentUser.role?.name === 'Super Admin') {
-                console.log(`✅ SUPER ADMIN - FORCING ALL TABS - showing: ${tab.id}`)
+                console.log(`✅ SUPER ADMIN DETECTED - FORCING ALL TABS - showing: ${tab.id}`)
                 return true
               }
 
               // FORCE ALL TABS FOR ADMIN - PERIOD!
               if (currentUser.role?.name === 'Admin') {
-                console.log(`✅ ADMIN - FORCING ALL TABS - showing: ${tab.id}`)
+                console.log(`✅ ADMIN DETECTED - FORCING ALL TABS - showing: ${tab.id}`)
                 return true
               }
 
