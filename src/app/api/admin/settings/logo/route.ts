@@ -141,7 +141,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       logoUrl,
-      message: 'Logo uploaded successfully'
+      message: 'Logo uploaded successfully',
+      timestamp: Date.now(), // Add timestamp for cache invalidation
+      cacheBust: true // Signal that caches should be cleared
     })
 
   } catch (error) {

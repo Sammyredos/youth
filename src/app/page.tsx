@@ -204,7 +204,7 @@ export default function Home() {
             </div>
             <div className="text-center p-4 lg:p-6 rounded-xl bg-gradient-to-br from-green-100 to-green-50 hover:from-green-200 hover:to-green-100 transition-all duration-200 transform hover:scale-105">
               <div className="text-2xl lg:text-3xl font-apercu-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent mb-1">Aug</div>
-              <div className="text-sm font-apercu-medium text-gray-600">3rd-5th</div>
+              <div className="text-sm font-apercu-medium text-gray-600">7th-9th</div>
             </div>
             <div className="text-center p-4 lg:p-6 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 hover:from-orange-200 hover:to-orange-100 transition-all duration-200 transform hover:scale-105">
               <div className="text-2xl lg:text-3xl font-apercu-bold bg-gradient-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent mb-1">Free</div>
@@ -235,7 +235,7 @@ export default function Home() {
                 </div>
                 <h3 className="font-apercu-bold text-xl text-gray-900 mb-4">When</h3>
                 <div className="space-y-2">
-                  <p className="text-2xl font-apercu-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">August 3rd - 5th, 2025</p>
+                  <p className="text-2xl font-apercu-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">August 7th - 9th, 2025</p>
                   <p className="text-gray-600 font-apercu-regular">Friday to Sunday</p>
                   <p className="text-sm text-gray-500 font-apercu-regular">Check-in starts at 2:00 PM</p>
                 </div>

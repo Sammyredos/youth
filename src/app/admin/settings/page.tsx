@@ -13,6 +13,7 @@ import { ErrorModal } from '@/components/ui/error-modal'
 import { useBranding } from '@/contexts/BrandingContext'
 import { SystemBranding } from '@/components/admin/SystemBranding'
 import { useTranslation } from '@/contexts/LanguageContext'
+import { LogoManager } from '@/lib/logo-manager'
 import { RolesPermissionsManager } from '@/components/admin/RolesPermissionsManager'
 import {
   Settings,
@@ -82,6 +83,31 @@ export default function SettingsPage() {
     burstAllowance: 150
   })
   const [savingRateLimits, setSavingRateLimits] = useState(false)
+
+  // Helper function to determine write access
+  const hasWriteAccess = (tabId: string) => {
+    if (!currentUser?.role?.name) return false
+
+    // Super Admin has write access to everything
+    if (currentUser.role.name === 'Super Admin') {
+      return true
+    }
+
+    // Admin has read-only access to security and notifications
+    if (currentUser.role.name === 'Admin') {
+      if (tabId === 'security' || tabId === 'notifications') {
+        return false // Read-only for Admin
+      }
+      return true // Write access to other tabs
+    }
+
+    return false
+  }
+
+  // Helper function to show read-only warning
+  const isReadOnly = (tabId: string) => {
+    return !hasWriteAccess(tabId)
+  }
   const [registrationSettings, setRegistrationSettings] = useState({
     formClosureDate: '',
     minimumAge: 13
@@ -751,11 +777,17 @@ export default function SettingsPage() {
         // Update logo in branding context
         updateLogo(data.logoUrl)
 
+        // Update global logo manager immediately
+        LogoManager.updateGlobalLogo(data.logoUrl, true)
+
         // Force immediate refresh and then another after delay
         await refreshBranding()
-        setTimeout(() => refreshBranding(), 500)
+        setTimeout(() => {
+          refreshBranding()
+          LogoManager.forceRefresh()
+        }, 500)
 
-        console.log('Logo uploaded:', data.logoUrl)
+        console.log('Logo uploaded and propagated globally:', data.logoUrl)
       } else {
         throw new Error(data.error || data.message || 'Failed to upload logo')
       }
@@ -1115,8 +1147,21 @@ export default function SettingsPage() {
   // Helper function to render edit buttons
   const renderEditButtons = (categoryId: string) => {
     const isEditing = editingCategory === categoryId
+    const canEdit = hasWriteAccess(categoryId)
 
-    if (!isEditing && userRole === 'Super Admin') {
+    // Show read-only indicator for Admin users on restricted tabs
+    if (!canEdit && currentUser?.role?.name === 'Admin') {
+      return (
+        <div className="flex items-center text-amber-600">
+          <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+          </svg>
+          <span className="text-sm font-medium">Read Only</span>
+        </div>
+      )
+    }
+
+    if (!isEditing && canEdit) {
       return (
         <Button
           variant="outline"
@@ -1128,7 +1173,7 @@ export default function SettingsPage() {
           Edit
         </Button>
       )
-    } else if (userRole === 'Super Admin' && isEditing) {
+    } else if (canEdit && isEditing) {
       return (
         <div className="flex gap-2">
           <Button
@@ -1159,14 +1204,8 @@ export default function SettingsPage() {
           </Button>
         </div>
       )
-    } else if (userRole === 'Admin') {
-      return (
-        <Badge variant="secondary" className="font-apercu-medium text-xs">
-          <Eye className="h-3 w-3 mr-1" />
-          Read Only
-        </Badge>
-      )
     }
+
     return null
   }
 
@@ -1688,6 +1727,24 @@ export default function SettingsPage() {
   // Security Tab Content
   const renderSecurityTab = () => (
     <div className="space-y-6">
+      {/* Read-Only Warning for Admin Users */}
+      {currentUser?.role?.name === 'Admin' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-amber-800">Read-Only Access</h3>
+              <p className="text-sm text-amber-700 mt-1">
+                You have read-only access to security settings. Only Super Admins can modify these settings.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Security Settings Card */}
       {settings.security && Array.isArray(settings.security) && settings.security.length > 0 ? (
         <Card className="p-6 bg-white">
@@ -1792,6 +1849,24 @@ export default function SettingsPage() {
   // Notifications Tab Content
   const renderNotificationsTab = () => (
     <div className="space-y-6">
+      {/* Read-Only Warning for Admin Users */}
+      {currentUser?.role?.name === 'Admin' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-amber-800">Read-Only Access</h3>
+              <p className="text-sm text-amber-700 mt-1">
+                You have read-only access to notification settings. Only Super Admins can modify these settings.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       {settings.notifications && Array.isArray(settings.notifications) && settings.notifications.length > 0 ? (
         <Card className="p-6 bg-white">
           <div className="flex items-center justify-between mb-6">
@@ -2495,31 +2570,30 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {settingsTabs
             .filter(tab => {
-              // Debug logging
-              console.log('🔍 Settings Tab Filter Debug:', {
+              // FORCE ALL TABS TO SHOW FOR SUPER ADMIN AND ADMIN - NO EXCEPTIONS!
+              console.log('🔍 FORCED Settings Tab Filter:', {
                 tabId: tab.id,
                 currentUserRole: currentUser?.role?.name,
                 userLoading,
                 hasCurrentUser: !!currentUser,
-                isSuper: currentUser?.role?.name === 'Super Admin',
-                isAdmin: currentUser?.role?.name === 'Admin'
+                forcingAllTabs: true
               })
 
-              // If no current user (not logged in), only show general tab
+              // If no current user, only show general tab
               if (!currentUser) {
                 console.log(`❌ No current user - hiding tab: ${tab.id}`)
                 return tab.id === 'general'
               }
 
-              // For Super Admin, show ALL tabs
+              // FORCE ALL TABS FOR SUPER ADMIN - PERIOD!
               if (currentUser.role?.name === 'Super Admin') {
-                console.log(`✅ Super Admin - showing tab: ${tab.id}`)
+                console.log(`✅ SUPER ADMIN - FORCING ALL TABS - showing: ${tab.id}`)
                 return true
               }
 
-              // For Admin, show all tabs
+              // FORCE ALL TABS FOR ADMIN - PERIOD!
               if (currentUser.role?.name === 'Admin') {
-                console.log(`✅ Admin - showing tab: ${tab.id}`)
+                console.log(`✅ ADMIN - FORCING ALL TABS - showing: ${tab.id}`)
                 return true
               }
 
@@ -2549,11 +2623,11 @@ export default function SettingsPage() {
           <p className="font-apercu-regular text-sm text-indigo-700">
             {settingsTabs
               .filter(tab => {
-                // For Super Admin, show ALL tabs
+                // FORCE ALL TABS FOR SUPER ADMIN AND ADMIN - NO EXCEPTIONS!
                 if (currentUser?.role?.name === 'Super Admin') {
                   return true
                 }
-                // For Admin, show all tabs
+                // FORCE ALL TABS FOR ADMIN - NO EXCEPTIONS!
                 if (currentUser?.role?.name === 'Admin') {
                   return true
                 }

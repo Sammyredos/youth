@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Eye, EyeOff, Lock, Mail, Users, Shield, ArrowRight } from 'lucide-react'
 // import { HydrationSafeDiv } from '@/components/ui/hydration-safe' // Commented out as unused
 import { useProgress } from '@/hooks/useProgress'
-import { DynamicLogo } from '@/components/ui/dynamic-logo'
+import { LoginLogo } from '@/components/ui/UniversalLogo'
 import { useReactiveSystemName } from '@/components/ui/reactive-system-name'
 import { pagePreloader } from '@/lib/page-preloader'
 import '@/styles/login-animations.css'
@@ -74,14 +74,10 @@ export default function AdminLogin() {
         {/* Header Section */}
         <div className="text-center mb-8 animate-slide-in-up" suppressHydrationWarning={true}>
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 shadow-lg animate-float overflow-hidden">
-            <DynamicLogo
-              className="w-16 h-16"
+            <LoginLogo
+              className="w-16 h-16 rounded-2xl"
               alt="System Logo"
-              fallbackIcon={
-                <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center">
-                  <Shield className="w-8 h-8 text-white" />
-                </div>
-              }
+              fallbackText="M"
             />
           </div>
           <h1 className="font-apercu-bold text-3xl text-gray-900 mb-2 animate-fade-in animate-delay-100">

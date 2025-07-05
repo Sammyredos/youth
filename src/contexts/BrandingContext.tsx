@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { LogoManager } from '@/lib/logo-manager'
 
 interface BrandingState {
   systemName: string
@@ -99,6 +100,9 @@ export function BrandingProvider({ children }: BrandingProviderProps) {
   const updateLogo = (url: string | null) => {
     setBranding(prev => ({ ...prev, logoUrl: url }))
 
+    // Update global logo manager
+    LogoManager.updateGlobalLogo(url, true)
+
     // Update favicon immediately and globally
     if (typeof window !== 'undefined') {
       updateFavicon(url)
@@ -107,6 +111,11 @@ export function BrandingProvider({ children }: BrandingProviderProps) {
         detail: { logoUrl: url }
       }))
     }
+
+    // Force refresh from server to ensure all components sync
+    setTimeout(() => {
+      LogoManager.forceRefresh()
+    }, 100)
   }
 
   // Update favicon function

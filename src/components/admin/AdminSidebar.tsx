@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useProgress } from '@/hooks/useProgress'
+import { SidebarLogo } from '@/components/ui/UniversalLogo'
 
 
 import {
@@ -238,22 +239,10 @@ export function AdminSidebar({ className }: SidebarProps) {
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-gray-200">
         <div className="flex items-center space-x-2">
-          {isLoading ? (
-            // Skeleton loader for logo
-            <div className="h-8 w-8 rounded-lg bg-gray-200 animate-pulse" />
-          ) : branding.logoUrl ? (
-            <div className="h-8 w-8 rounded-lg overflow-hidden border border-gray-200">
-              <img
-                src={branding.logoUrl}
-                alt="System Logo"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          ) : (
-            <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <UserPlus className="h-5 w-5 text-white" />
-            </div>
-          )}
+          <SidebarLogo
+            fallbackText={branding.systemName.charAt(0) || 'M'}
+            className="rounded-lg border border-gray-200"
+          />
           <div>
             {isLoading ? (
               // Skeleton loader for system name and subtitle
