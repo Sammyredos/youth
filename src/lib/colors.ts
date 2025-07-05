@@ -1,4 +1,4 @@
-// Color system for MopgomYouth Admin Dashboard
+// Color system for Youth Registration Admin Dashboard
 // Optimized for light mode with proper contrast and accessibility
 
 export const colors = {

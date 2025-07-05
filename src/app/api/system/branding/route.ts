@@ -16,6 +16,11 @@ export async function GET() {
       }
     })
 
+    console.log('🔍 Branding API Debug:', {
+      settingsFound: brandingSettings.length,
+      settings: brandingSettings.map(s => ({ key: s.key, value: s.value }))
+    })
+
     const systemNameSetting = brandingSettings.find(s => s.key === 'systemName')
     const logoUrlSetting = brandingSettings.find(s => s.key === 'logoUrl')
 
@@ -25,17 +30,25 @@ export async function GET() {
     if (systemNameSetting) {
       try {
         systemName = JSON.parse(systemNameSetting.value)
+        console.log('✅ System name from JSON:', systemName)
       } catch {
         systemName = systemNameSetting.value
+        console.log('✅ System name from raw value:', systemName)
       }
+    } else {
+      console.log('⚠️ No system name setting found, using default:', systemName)
     }
 
     if (logoUrlSetting) {
       try {
         logoUrl = JSON.parse(logoUrlSetting.value)
+        console.log('✅ Logo URL from JSON:', logoUrl)
       } catch {
         logoUrl = logoUrlSetting.value
+        console.log('✅ Logo URL from raw value:', logoUrl)
       }
+    } else {
+      console.log('⚠️ No logo URL setting found')
     }
 
     // Add cache-busting parameter to logo URL
@@ -58,7 +71,7 @@ export async function GET() {
     // Return default values on error
     return NextResponse.json({
       success: true,
-      systemName: 'MopgomYouth',
+      systemName: 'Mopgomglobal',
       logoUrl: null
     }, {
       headers: {

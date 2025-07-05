@@ -243,6 +243,11 @@ export default function AttendancePage() {
       const data = await response.json()
 
       if (response.ok) {
+        console.log('🔍 Unverify Modal Data:', {
+          registrationData: data.registration,
+          hasRoomAllocation: data.hasRoomAllocation,
+          roomDetails: data.roomDetails
+        })
         setUnverifyTarget(registrationId)
         setRoomAllocationData(data)
         setShowUnverifyModal(true)

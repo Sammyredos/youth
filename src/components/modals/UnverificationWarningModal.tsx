@@ -73,17 +73,48 @@ export function UnverificationWarningModal({
   }
 
   const calculateAge = (dateOfBirth: string) => {
-    const today = new Date()
-    const birthDate = new Date(dateOfBirth)
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDiff = today.getMonth() - birthDate.getMonth()
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--
+    if (!dateOfBirth) {
+      console.warn('⚠️ Date of birth is missing for age calculation')
+      return 'Unknown'
     }
-    return age
+
+    try {
+      const today = new Date()
+      const birthDate = new Date(dateOfBirth)
+
+      // Check if the date is valid
+      if (isNaN(birthDate.getTime())) {
+        console.warn('⚠️ Invalid date of birth:', dateOfBirth)
+        return 'Invalid Date'
+      }
+
+      let age = today.getFullYear() - birthDate.getFullYear()
+      const monthDiff = today.getMonth() - birthDate.getMonth()
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--
+      }
+      return age
+    } catch (error) {
+      console.error('Error calculating age:', error)
+      return 'Error'
+    }
   }
 
-  if (!registration) return null
+  if (!registration) {
+    console.warn('⚠️ UnverificationWarningModal: No registration data provided')
+    return null
+  }
+
+  // Debug logging
+  console.log('🔍 UnverificationWarningModal Registration Data:', {
+    registration,
+    hasDateOfBirth: !!registration.dateOfBirth,
+    hasPhoneNumber: !!registration.phoneNumber,
+    hasEmailAddress: !!registration.emailAddress,
+    dateOfBirth: registration.dateOfBirth,
+    phoneNumber: registration.phoneNumber,
+    emailAddress: registration.emailAddress
+  })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -116,16 +147,20 @@ export function UnverificationWarningModal({
               <div>
                 <p className="font-apercu-medium text-sm text-gray-600">Age</p>
                 <p className="font-apercu-regular text-base text-gray-900">
-                  {calculateAge(registration.dateOfBirth)} years old
+                  {registration.dateOfBirth ? `${calculateAge(registration.dateOfBirth)} years old` : 'Age not available'}
                 </p>
               </div>
               <div>
                 <p className="font-apercu-medium text-sm text-gray-600">Phone</p>
-                <p className="font-apercu-regular text-base text-gray-900">{registration.phoneNumber}</p>
+                <p className="font-apercu-regular text-base text-gray-900">
+                  {registration.phoneNumber || 'Phone not available'}
+                </p>
               </div>
               <div className="md:col-span-2">
                 <p className="font-apercu-medium text-sm text-gray-600">Email</p>
-                <p className="font-apercu-regular text-base text-gray-900 break-all">{registration.emailAddress}</p>
+                <p className="font-apercu-regular text-base text-gray-900 break-all">
+                  {registration.emailAddress || 'Email not available'}
+                </p>
               </div>
             </div>
           </Card>

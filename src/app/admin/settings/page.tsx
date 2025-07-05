@@ -57,7 +57,7 @@ interface SettingsState {
 
 export default function SettingsPage() {
   const { t } = useTranslation()
-  const { currentUser } = useUser()
+  const { currentUser, loading: userLoading } = useUser()
   const { branding, updateSystemName, updateLogo, refreshBranding } = useBranding()
   const [settings, setSettings] = useState<SettingsState>({})
   const [loading, setLoading] = useState(false) // Start with false for instant display
@@ -2440,6 +2440,18 @@ export default function SettingsPage() {
     )
   }
 
+  // Show loading state while user data is being fetched
+  if (userLoading) {
+    return (
+      <AdminLayoutNew title={t('page.settings.title')} description={t('page.settings.description')}>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading user permissions...</p>
+        </div>
+      </AdminLayoutNew>
+    )
+  }
+
   // Check permissions - Allow Super Admin and Admin roles only
   const allowedRoles = ['Super Admin', 'Admin']
   if (currentUser && !allowedRoles.includes(currentUser.role?.name || '')) {
@@ -2487,23 +2499,33 @@ export default function SettingsPage() {
               console.log('🔍 Settings Tab Filter Debug:', {
                 tabId: tab.id,
                 currentUserRole: currentUser?.role?.name,
+                userLoading,
+                hasCurrentUser: !!currentUser,
                 isSuper: currentUser?.role?.name === 'Super Admin',
                 isAdmin: currentUser?.role?.name === 'Admin'
               })
 
+              // If no current user (not logged in), only show general tab
+              if (!currentUser) {
+                console.log(`❌ No current user - hiding tab: ${tab.id}`)
+                return tab.id === 'general'
+              }
+
               // For Super Admin, show ALL tabs
-              if (currentUser?.role?.name === 'Super Admin') {
+              if (currentUser.role?.name === 'Super Admin') {
                 console.log(`✅ Super Admin - showing tab: ${tab.id}`)
                 return true
               }
-              // For Admin, show all except roles (if we want to restrict)
-              if (currentUser?.role?.name === 'Admin') {
+
+              // For Admin, show all tabs
+              if (currentUser.role?.name === 'Admin') {
                 console.log(`✅ Admin - showing tab: ${tab.id}`)
-                return true // Show all tabs for Admin too
+                return true
               }
+
               // For other roles, only show general tab
               const showTab = tab.id === 'general'
-              console.log(`${showTab ? '✅' : '❌'} Other role - ${showTab ? 'showing' : 'hiding'} tab: ${tab.id}`)
+              console.log(`${showTab ? '✅' : '❌'} Other role (${currentUser.role?.name}) - ${showTab ? 'showing' : 'hiding'} tab: ${tab.id}`)
               return showTab
             })
             .map((tab) => (

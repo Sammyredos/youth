@@ -243,7 +243,7 @@ class MessageQueue {
               <p>${message.content.replace(/\n/g, '<br>')}</p>
             </div>
             <div class="footer">
-              <p>This message was sent through the MopgomYouth messaging system.</p>
+              <p>This message was sent through the youth registration messaging system.</p>
               <p>Please log in to your account to reply.</p>
             </div>
           </div>

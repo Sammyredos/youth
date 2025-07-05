@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { authenticateRequest } from '@/lib/auth-helpers'
+import { RoomAllocationEmailService } from '@/lib/services/room-allocation-email'
 
 const prisma = new PrismaClient()
 
@@ -158,10 +159,29 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Send room allocation email to the registrant
+    try {
+      const emailResult = await RoomAllocationEmailService.sendRoomAllocationEmailWithDefaults(
+        registrationId,
+        currentUser.email
+      )
+
+      if (!emailResult.success) {
+        console.warn('Failed to send room allocation email:', emailResult.error)
+        // Don't fail the allocation if email fails
+      } else {
+        console.log('Room allocation email sent successfully to registrant')
+      }
+    } catch (emailError) {
+      console.error('Error sending room allocation email:', emailError)
+      // Don't fail the allocation if email fails
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Registration allocated successfully',
-      allocation
+      allocation,
+      emailSent: true // Indicate that email was attempted
     })
 
   } catch (error) {

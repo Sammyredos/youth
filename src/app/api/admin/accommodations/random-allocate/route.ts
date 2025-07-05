@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { authenticateRequest } from '@/lib/auth-helpers'
 import { invalidateCache } from '@/lib/cache'
+import { RoomAllocationEmailService } from '@/lib/services/room-allocation-email'
 
 const prisma = new PrismaClient()
 
@@ -210,12 +211,36 @@ export async function POST(request: NextRequest) {
 
     const totalAllocated = allocations.length
 
+    // Send room allocation emails to all allocated registrants
+    let emailResults = null
+    if (allocations.length > 0) {
+      try {
+        console.log(`Sending room allocation emails to ${allocations.length} randomly allocated registrants...`)
+
+        const allocatedRegistrationIds = allocations.map(allocation => allocation.registrationId)
+        emailResults = await RoomAllocationEmailService.sendBulkRoomAllocationEmailsWithDefaults(
+          allocatedRegistrationIds,
+          currentUser.email
+        )
+
+        console.log('Random allocation bulk email results:', emailResults.summary)
+      } catch (emailError) {
+        console.error('Error sending bulk room allocation emails for random allocation:', emailError)
+        // Don't fail the allocation if emails fail
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: `Successfully allocated ${totalAllocated} registrations randomly`,
       totalAllocated,
       results: allocationResults,
-      allocationType: 'random'
+      allocationType: 'random',
+      emailResults: emailResults ? {
+        emailsSent: emailResults.summary.successful,
+        emailsFailed: emailResults.summary.failed,
+        totalEmails: emailResults.summary.total
+      } : null
     })
 
   } catch (error) {

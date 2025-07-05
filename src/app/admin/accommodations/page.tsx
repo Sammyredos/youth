@@ -238,12 +238,27 @@ function AccommodationsPageContent() {
 
 
 
-  const handleAllocationComplete = (result: { totalAllocated: number }) => {
+  const handleAllocationComplete = (result: { totalAllocated: number; emailResults?: any }) => {
     setShowAllocationModal(false)
     setUnallocatedLoading(true)
     fetchAccommodationData().finally(() => setUnallocatedLoading(false))
     setRefreshTrigger(prev => prev + 1)
-    showToast(`Successfully allocated ${result.totalAllocated} registrations`, 'success')
+
+    // Create success message with email results
+    let message = `Successfully allocated ${result.totalAllocated} registrations`
+
+    // Add email results if available
+    if (result.emailResults) {
+      const { emailsSent, emailsFailed, totalEmails } = result.emailResults
+      if (totalEmails > 0) {
+        message += `. Room details sent to ${emailsSent} registrants`
+        if (emailsFailed > 0) {
+          message += ` (${emailsFailed} emails failed)`
+        }
+      }
+    }
+
+    showToast(message, 'success')
   }
 
   const handlePersonPreview = (registrationId: string) => {

@@ -270,6 +270,9 @@ export async function GET(request: NextRequest) {
         id: registration.id,
         fullName: registration.fullName,
         gender: registration.gender,
+        dateOfBirth: registration.dateOfBirth,
+        phoneNumber: registration.phoneNumber,
+        emailAddress: registration.emailAddress,
         isVerified: registration.isVerified,
         verifiedAt: registration.verifiedAt,
         verifiedBy: registration.verifiedBy
