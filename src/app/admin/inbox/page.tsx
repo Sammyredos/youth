@@ -695,7 +695,7 @@ export default function InboxPage() {
                                 {conversation.lastMessage || 'No messages yet'}
                               </p>
                               {conversation.unreadCount > 0 && (
-                                <div className="bg-indigo-500 text-white text-xs font-apercu-bold rounded-full h-5 w-5 flex items-center justify-center ml-2 flex-shrink-0 min-w-[20px]">
+                                <div className="bg-indigo-500 text-gray text-xs font-apercu-bold rounded-full h-5 w-5 flex items-center justify-center ml-2 flex-shrink-0 min-w-[20px]">
                                   {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
                                 </div>
                               )}

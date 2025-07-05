@@ -2483,16 +2483,28 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {settingsTabs
             .filter(tab => {
+              // Debug logging
+              console.log('🔍 Settings Tab Filter Debug:', {
+                tabId: tab.id,
+                currentUserRole: currentUser?.role?.name,
+                isSuper: currentUser?.role?.name === 'Super Admin',
+                isAdmin: currentUser?.role?.name === 'Admin'
+              })
+
               // For Super Admin, show ALL tabs
               if (currentUser?.role?.name === 'Super Admin') {
+                console.log(`✅ Super Admin - showing tab: ${tab.id}`)
                 return true
               }
               // For Admin, show all except roles (if we want to restrict)
               if (currentUser?.role?.name === 'Admin') {
+                console.log(`✅ Admin - showing tab: ${tab.id}`)
                 return true // Show all tabs for Admin too
               }
               // For other roles, only show general tab
-              return tab.id === 'general'
+              const showTab = tab.id === 'general'
+              console.log(`${showTab ? '✅' : '❌'} Other role - ${showTab ? 'showing' : 'hiding'} tab: ${tab.id}`)
+              return showTab
             })
             .map((tab) => (
             <button

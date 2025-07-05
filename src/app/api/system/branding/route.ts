@@ -38,13 +38,17 @@ export async function GET() {
       }
     }
 
+    // Add cache-busting parameter to logo URL
+    const logoUrlWithCacheBust = logoUrl ? `${logoUrl}?v=${Date.now()}` : null
+
     return NextResponse.json({
       success: true,
       systemName,
-      logoUrl
+      logoUrl: logoUrlWithCacheBust,
+      timestamp: Date.now() // Add timestamp for cache invalidation
     }, {
       headers: {
-        'Cache-Control': 'public, max-age=60', // Cache for 1 minute
+        'Cache-Control': 'public, max-age=30', // Reduced cache time for faster updates
       }
     })
 

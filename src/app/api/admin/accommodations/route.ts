@@ -126,6 +126,17 @@ export async function GET(request: NextRequest) {
 
     // Calculate statistics - unallocated should only include VERIFIED participants
     const verifiedUnallocated = accommodationData.verifiedRegistrations - accommodationData.allocatedRegistrations
+    const totalCapacity = accommodationData.totalCapacity._sum.capacity || 0
+    const occupiedSpaces = accommodationData.occupiedSpaces || 0
+
+    // Debug logging for room occupancy calculation
+    console.log('🏠 Room Occupancy Debug:', {
+      totalCapacity,
+      occupiedSpaces,
+      calculation: totalCapacity > 0 ? Math.round((occupiedSpaces / totalCapacity) * 100) : 0,
+      rawCapacityData: accommodationData.totalCapacity
+    })
+
     const stats = {
       totalRegistrations: accommodationData.totalRegistrations,
       verifiedRegistrations: accommodationData.verifiedRegistrations,
@@ -134,10 +145,10 @@ export async function GET(request: NextRequest) {
       allocationRate: accommodationData.verifiedRegistrations > 0 ? Math.round((accommodationData.allocatedRegistrations / accommodationData.verifiedRegistrations) * 100) : 0,
       totalRooms: accommodationData.totalRooms,
       activeRooms: accommodationData.activeRooms,
-      totalCapacity: accommodationData.totalCapacity._sum.capacity || 0,
-      occupiedSpaces: accommodationData.occupiedSpaces,
-      availableSpaces: (accommodationData.totalCapacity._sum.capacity || 0) - accommodationData.occupiedSpaces,
-      roomOccupancyRate: accommodationData.totalCapacity._sum.capacity ? Math.round((accommodationData.occupiedSpaces / accommodationData.totalCapacity._sum.capacity) * 100) : 0
+      totalCapacity,
+      occupiedSpaces,
+      availableSpaces: totalCapacity - occupiedSpaces,
+      roomOccupancyRate: totalCapacity > 0 ? Math.round((occupiedSpaces / totalCapacity) * 100) : 0
     }
 
     // Group rooms by gender for better organization

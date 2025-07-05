@@ -48,7 +48,7 @@ interface AccommodationStats {
   totalCapacity: number
   occupiedSpaces: number
   availableSpaces: number
-  occupancyRate: number
+  roomOccupancyRate: number
 }
 
 interface Room {
@@ -158,6 +158,12 @@ function AccommodationsPageContent() {
       }
 
       const data = await response.json()
+      console.log('🏠 Accommodation Stats Debug:', {
+        occupiedSpaces: data.stats?.occupiedSpaces,
+        totalCapacity: data.stats?.totalCapacity,
+        roomOccupancyRate: data.stats?.roomOccupancyRate,
+        calculation: data.stats?.totalCapacity > 0 ? Math.round((data.stats?.occupiedSpaces / data.stats?.totalCapacity) * 100) : 0
+      })
       setStats(data.stats)
 
       const newRoomsByGender = data.roomsByGender || {}
@@ -533,7 +539,7 @@ function AccommodationsPageContent() {
               totalCapacity: stats?.totalCapacity || 0,
               occupiedSpaces: stats?.occupiedSpaces || 0,
               availableSpaces: stats?.availableSpaces || 0,
-              roomOccupancyRate: stats?.occupancyRate || 0
+              roomOccupancyRate: stats?.roomOccupancyRate || 0
             }}
             loading={isLoading && !initialLoadComplete}
           />
