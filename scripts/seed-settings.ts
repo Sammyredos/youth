@@ -25,14 +25,140 @@ async function seedSettings() {
         description: 'Brief description of the system'
       },
       {
-        key: 'system.name',
-        value: 'MOPGOM Global Youth Registration',
-        description: 'System name displayed in the application'
+        category: 'branding',
+        key: 'logoUrl',
+        name: 'Logo URL',
+        value: null,
+        type: 'text',
+        description: 'URL of the system logo'
       },
       {
-        key: 'system.description',
-        value: 'Youth registration and management platform',
-        description: 'System description'
+        category: 'system',
+        key: 'timezone',
+        name: 'System Timezone',
+        value: 'UTC-5 (EST)',
+        type: 'text',
+        description: 'Default timezone for the system'
+      },
+      {
+        category: 'system',
+        key: 'dateFormat',
+        name: 'Date Format',
+        value: 'MM/DD/YYYY',
+        type: 'text',
+        description: 'Default date format'
+      },
+      {
+        category: 'system',
+        key: 'maintenanceMode',
+        name: 'Maintenance Mode',
+        value: false,
+        type: 'boolean',
+        description: 'Enable maintenance mode'
+      },
+      {
+        category: 'system',
+        key: 'debugMode',
+        name: 'Debug Mode',
+        value: false,
+        type: 'boolean',
+        description: 'Enable debug mode'
+      },
+      {
+        category: 'registration',
+        key: 'enabled',
+        name: 'Registration Enabled',
+        value: true,
+        type: 'boolean',
+        description: 'Enable/disable new registrations'
+      },
+      {
+        category: 'registration',
+        key: 'minimumAge',
+        name: 'Minimum Age',
+        value: 16,
+        type: 'number',
+        description: 'Minimum age for registration'
+      },
+      {
+        category: 'registration',
+        key: 'maximumAge',
+        name: 'Maximum Age',
+        value: 35,
+        type: 'number',
+        description: 'Maximum age for registration'
+      },
+      {
+        category: 'registration',
+        key: 'closureDate',
+        name: 'Registration Closure Date',
+        value: '2024-12-31',
+        type: 'date',
+        description: 'Registration closure date'
+      },
+      {
+        category: 'email',
+        key: 'enabled',
+        name: 'Email Enabled',
+        value: true,
+        type: 'boolean',
+        description: 'Enable email notifications'
+      },
+      {
+        category: 'sms',
+        key: 'enabled',
+        name: 'SMS Enabled',
+        value: false,
+        type: 'boolean',
+        description: 'Enable SMS notifications'
+      },
+      {
+        category: 'accommodations',
+        key: 'enabled',
+        name: 'Accommodations Enabled',
+        value: true,
+        type: 'boolean',
+        description: 'Enable accommodation management'
+      },
+      {
+        category: 'accommodations',
+        key: 'ageGapLimit',
+        name: 'Age Gap Limit',
+        value: 3,
+        type: 'number',
+        description: 'Maximum age gap for room allocation'
+      },
+      {
+        category: 'security',
+        key: 'maxLoginAttempts',
+        name: 'Max Login Attempts',
+        value: 5,
+        type: 'number',
+        description: 'Maximum login attempts before lockout'
+      },
+      {
+        category: 'security',
+        key: 'lockoutDuration',
+        name: 'Lockout Duration',
+        value: 30,
+        type: 'number',
+        description: 'Account lockout duration in minutes'
+      },
+      {
+        category: 'notifications',
+        key: 'newRegistrationAlerts',
+        name: 'New Registration Alerts',
+        value: true,
+        type: 'boolean',
+        description: 'Send alerts for new registrations'
+      },
+      {
+        category: 'notifications',
+        key: 'dailySummary',
+        name: 'Daily Summary',
+        value: true,
+        type: 'boolean',
+        description: 'Send daily summary emails'
       },
       {
         key: 'registration.enabled',
@@ -106,7 +232,7 @@ async function seedSettings() {
             category: setting.category,
             key: setting.key,
             name: setting.name,
-            value: JSON.stringify(setting.value),
+            value: setting.value === null ? null : JSON.stringify(setting.value),
             type: setting.type,
             description: setting.description
           }

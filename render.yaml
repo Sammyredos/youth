@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: youth-registration-system
+    name: Mopgomyouth
     env: node
     plan: free
     buildCommand: |
@@ -27,7 +27,7 @@ services:
       - key: NEXTAUTH_SECRET
         generateValue: true
       - key: NEXTAUTH_URL
-        value: https://youth-registration-system.onrender.com
+        value: https://mopgomyouth.onrender.com
       - key: SUPER_ADMIN_PASSWORD
         value: SuperAdmin123!
       - key: JWT_SECRET
